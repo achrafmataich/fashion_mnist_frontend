@@ -1,59 +1,115 @@
-# FashionMnistFrontend
+# Fashion MNIST Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.15.
+An interactive Angular web application for classifying fashion images using AI, styled with TailwindCSS 4.
 
-## Development server
+## Features
 
-To start a local development server, run:
+- Upload and classify images from the Fashion MNIST dataset
+- Real-time predictions via REST API
+- Responsive, modern UI with light/dark mode
+- Built with Angular 19 and TailwindCSS 4
 
-```bash
-ng serve
+## Quality Assurance
+
+The codebase has passed SonarQube scanner checks for code quality and maintainability.
+
+## Getting Started
+
+### 1. Clone the Repository
+
+```sh
+git clone https://github.com/achrafmataich/fashion_mnist_frontend.git
+cd fashion_mnist_frontend
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### 2. Install Dependencies
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```sh
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### 3. Configure Environment Variables
 
-```bash
-ng generate --help
+The project uses environment files for different modes: development, staging, and production.
+
+- Copy `src/environments/environment.example.ts` to create your own environment files:
+
+```sh
+cp src/environments/environment.example.ts src/environments/environment.development.ts
+cp src/environments/environment.example.ts src/environments/environment.staging.ts
+cp src/environments/environment.example.ts src/environments/environment.production.ts
 ```
 
-## Building
+- Edit each file and set the correct API endpoints:
 
-To build the project run:
-
-```bash
-ng build
+```ts
+// src/environments/environment.development.ts
+export const environment = {
+  apiUrl: "http://localhost:8080/",
+  predictEndpoint: "/prediction/predict/json",
+};
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Repeat for staging and production as needed.
 
-## Running unit tests
+### 4. Run the Application (Development)
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+```sh
+npm start
 ```
 
-## Running end-to-end tests
+The app will be available at [http://localhost:4200](http://localhost:4200).
 
-For end-to-end (e2e) testing, run:
 
-```bash
-ng e2e
+## Building for Production or Staging
+
+```sh
+npm run build           # Production build
+npm run build:staging   # Staging build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Output files will be in the `dist/` directory.
 
-## Additional Resources
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Docker Deployment
+
+### 1. Build Docker Image
+
+First build the image with
+
+```sh
+docker build -t fashion-mnist-frontend .
+```
+
+Then run the container using this image
+
+```sh
+docker run -d --name fashion-mnist-frontend -p 80:80 --network fashion-mnist-network fashion-mnist-frontend
+```
+
+The app will be available at [http://localhost:80](http://localhost:80).
+
+
+## Environment Management
+
+- The `.gitignore` excludes your actual environment files (`environment.production.ts`, `environment.staging.ts`, `environment.development.ts`).
+- Always use `environment.example.ts` as a template for your own configuration.
+
+
+## Project Structure
+
+- `src/app/` — Angular components and services
+- `src/environments/` — Environment configuration files
+- `src/styles.css` — Global Angular app styles
+- `Dockerfile` — Docker build file
+- `nginx.conf` — Nginx configuration for static hosting used in docker image
+
+## Contributing
+
+Feel free to open issues or submit pull requests!
+
+## Author
+
+<img src="https://avatars.githubusercontent.com/u/100163733?size=128" alt="Achraf MATAICH" width="64" height="64" style="border-radius: 50%;">
+
+[Achraf MATAICH](https://github.com/achrafmataich) <achraf.mataich@outlook.com>

@@ -1,0 +1,9 @@
+@reference "../../../styles.css";
+
+.nvbr-item {
+  &.active {
+    @apply relative text-emerald-800 dark:text-emerald-200 after:absolute after:block after:h-1 after:w-3 after:bg-emerald-700 dark:after:bg-emerald-300 after:rounded-full after:-bottom-0.5 after:left-1/2 after:-translate-1/2;
+  }
+
+  @apply rounded-md px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white;
+}

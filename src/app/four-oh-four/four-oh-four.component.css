@@ -1,0 +1,5 @@
+:host {
+  display: block; /* Essential for applying height/width to the host element */
+  height: 100%;
+  width: 100%;
+}

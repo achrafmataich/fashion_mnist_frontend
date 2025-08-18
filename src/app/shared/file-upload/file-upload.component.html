@@ -1,0 +1,142 @@
+<div
+    class="max-w-4xl mx-auto p-6 bg-zinc-50 ring-1 ring-zinc-200 dark:bg-zinc-800 shadow-2xl dark:shadow-[none] rounded-2xl">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold mb-2">Fashion MNIST Classifier</h1>
+        <p class="opacity-80">Upload an image to classify fashion items using machine learning</p>
+    </div>
+
+    <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <!-- Drag and Drop Zone -->
+        <div class="relative">
+            <div class="border-2 border-dashed rounded-lg p-8 text-center transition-all duration-200 ease-in-out cursor-pointer"
+                [ngClass]="{
+          'border-blue-400 dark:border-blue-700 bg-blue-50 dark:bg-blue-950': isDragOver,
+          'border-zinc-300 dark:border-zinc-900 hover:border-zinc-400 dark:hover:border-zinc-700': !isDragOver && !selectedFile,
+          'border-green-400 dark:border-green-700 bg-green-50 dark:bg-green-950': selectedFile && !isDragOver
+        }" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)"
+                (click)="triggerFileInput()">
+
+                <!-- Upload Icon and Text -->
+                <div *ngIf="!selectedFile" class="space-y-4">
+                    <svg class="mx-auto h-12 w-12 opacity-80" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                        <path
+                            d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <div>
+                        <p class="text-lg font-medium">
+                            <span class="text-emerald-600">Click to upload</span> or drag and drop
+                        </p>
+                        <p class="text-sm opacity-60 mt-1">
+                            PNG, JPG up to 5MB
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Image Preview -->
+                @if(selectedFile && previewUrl)
+                {
+                <div class="space-y-4">
+                    <div class="relative inline-block">
+                        <img [src]="previewUrl" alt="Preview" class="max-h-64 max-w-full rounded-lg shadow-md">
+                        <button type="button" (click)="removeImage(); $event.stopPropagation()"
+                            class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="text-sm opacity-80">
+                        <p class="font-medium">{{ selectedFile.name }}</p>
+                        <p>{{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB</p>
+                    </div>
+                </div>
+                }
+            </div>
+
+            <!-- Hidden File Input -->
+            <input type="file" id="fileInput" [accept]="allowedTypes.join(',')" (change)="onFileSelected($event)"
+                class="hidden">
+        </div>
+
+        <!-- Error Message -->
+        @if (uploadError) {
+        <div class="bg-red-50 dark:bg-transparent border border-red-200 dark:border-red-800 rounded-md p-4">
+            <div class="flex">
+                <svg class="h-5 w-5 text-red-400 dark:text-red-600" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clip-rule="evenodd" />
+                </svg>
+                <div class="ml-3">
+                    <p class="text-sm text-red-800 dark:text-red-200">{{ uploadError }}</p>
+                </div>
+            </div>
+        </div>
+        }
+
+        <!-- Form Validation Error -->
+        @if (uploadForm.get('image')?.invalid && uploadForm.get('image')?.touched) {
+        <div class="bg-red-50 border border-red-200 rounded-md p-4">
+            <p class="text-sm text-red-800">Please select an image file</p>
+        </div>
+        }
+
+        <!-- Action Buttons -->
+        <div class="flex space-x-4">
+            <button type="submit" [disabled]="uploadForm.invalid || isUploading"
+                class="flex-1 bg-emerald-600 text-white py-3 px-6 rounded-md font-medium hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                @if (!isUploading) {
+                <span>Predict Fashion Item</span>
+                }
+                @else {
+                <span class="flex items-center justify-center">
+                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                    Processing...
+                </span>
+                }
+            </button>
+
+            <button type="button" (click)="resetForm()"
+                class="px-6 py-3 border border-zinc-300 dark:border-zinc-700 rounded-md text-zinc-700 dark:text-zinc-200 font-medium hover:bg-zinc-100 dark:hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+                Reset
+            </button>
+        </div>
+    </form>
+
+    <!-- Prediction Results -->
+    @if (predictionResult) {
+    <div class="mt-8">
+        @if (predictionResult.success) {
+        <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+            <h3 class="text-lg font-medium text-green-900 mb-4">Prediction Results</h3>
+            <div class="space-y-3">
+                @if (predictionResult.data?.predicted_class) {
+                <div class="flex items-center">
+                    <span class="text-sm font-medium text-green-700 mr-2">Predicted Class:</span>
+                    <span
+                        class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                        {{ predictionResult.data?.predicted_class }}
+                    </span>
+                </div>
+                }
+            </div>
+        </div>
+        }
+        @else {
+        <div class="bg-red-50 border border-red-200 rounded-lg p-6">
+            <h3 class="text-lg font-medium text-red-900 mb-2">Prediction Failed</h3>
+            <p class="text-sm text-red-700">{{ predictionResult.error }}</p>
+        </div>
+        }
+    </div>
+    }
+</div>

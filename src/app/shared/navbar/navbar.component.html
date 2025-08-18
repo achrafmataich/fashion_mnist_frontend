@@ -1,0 +1,56 @@
+<nav
+    class="relative bg-zinc-100/80 dark:bg-zinc-900/80 after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px dark:after:bg-white/10 after:bg-black/10">
+    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div class="relative flex h-16 items-center justify-between">
+            <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                <!-- Mobile menu button-->
+                <button type="button" command="--toggle" commandfor="mobile-menu"
+                    class="relative inline-flex items-center justify-center rounded-md p-2 text-zinc-400 hover:bg-white/5 hover:text-white focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-500">
+                    <span class="absolute -inset-0.5"></span>
+                    <span class="sr-only">Open main menu</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon"
+                        aria-hidden="true" class="size-6 in-aria-expanded:hidden">
+                        <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon"
+                        aria-hidden="true" class="size-6 not-in-aria-expanded:hidden">
+                        <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                <div class="flex shrink-0 items-center">
+                    <svg class="h-8 w-auto -rotate-45 text-emerald-700 dark:text-emerald-300" viewBox="0 0 16 16" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M7 0V1.60002C7.32311 1.53443 7.65753 1.5 8 1.5C8.34247 1.5 8.67689 1.53443 9 1.60002V0H11V2.49963C11.8265 3.12041 12.4543 3.99134 12.7711 5H3.2289C3.5457 3.99134 4.17354 3.12041 5 2.49963V0H7Z"
+                            fill="currentColor" />
+                        <path
+                            d="M0 7V9H3V10.4957L0.225279 11.2885L0.774721 13.2115L3.23189 12.5095C3.87194 14.5331 5.76467 16 8 16C10.2353 16 12.1281 14.5331 12.7681 12.5095L15.2253 13.2115L15.7747 11.2885L13 10.4957V9H16V7H9V12H7V7H0Z"
+                            fill="currentColor" />
+                    </svg>
+                </div>
+                <div class="hidden sm:ml-6 sm:block">
+                    <div class="flex space-x-4">
+                        <a routerLink="onboarding" routerLinkActive="active" class="nvbr-item">Onboarding</a>
+                        <a routerLink="classifier" routerLinkActive="active" class="nvbr-item">Classifier</a>
+                        <a routerLink="about" routerLinkActive="active" class="nvbr-item">About</a>
+                    </div>
+                </div>
+            </div>
+            <select [formControl]="selectModeFormControl" (change)="changevValue()"
+                class="col-start-1 row-start-1 appearance-none rounded-md bg-white/10 dark:bg-black/10 py-1.5 pr-8 pl-3 text-base text-black dark:text-white outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10 *:bg-zinc-100 dark:*:bg-zinc-800 focus:outline-2 focus:-outline-offset-2 focus:outline-emerald-500 sm:text-sm/6">
+                @for (mode of colors; track $index) {
+                <option [value]="mode.id">{{mode.name}}</option>
+                }
+            </select>
+            <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                <a target="_blank" rel="noreferrer" href="https://github.com/achrafmataich"
+                    class="mx-auto flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-full bg-emerald-100 dark:bg-emerald-900 px-7 py-2 transition-all hover:scale-110 ease-in-out">
+                    <p class="text-sm font-semibold text-emerald-800 dark:text-emerald-200"><ng-icon name="ionLogoGithub"></ng-icon> Check my github</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
