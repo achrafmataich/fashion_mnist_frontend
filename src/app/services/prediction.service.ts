@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { environment } from '../../environments/environment.example';
+import { environment } from '../../environments/environment';
 import { PredictionResponse } from '../models/prediction.model';
 
 
